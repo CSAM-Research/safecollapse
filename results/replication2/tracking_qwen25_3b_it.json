@@ -1,0 +1,16 @@
+{
+  "n_checkpoints": 9,
+  "n_seeds": 1,
+  "levels": {
+    "rho": -0.5378341163622514,
+    "ci_low": NaN,
+    "ci_high": NaN
+  },
+  "changes": {
+    "rho": -0.7470421737034139,
+    "ci_low": NaN,
+    "ci_high": NaN
+  },
+  "levels_replace": -0.49999999999999994,
+  "levels_subsample": -0.05129891760425771
+}

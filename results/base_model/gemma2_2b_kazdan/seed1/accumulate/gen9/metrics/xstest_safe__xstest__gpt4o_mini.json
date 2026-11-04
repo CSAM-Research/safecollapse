@@ -1,0 +1,9 @@
+{
+ "n": 250,
+ "n_errors": 0,
+ "over_refusal": 0.256,
+ "full_refusal": 0.2,
+ "providers": {
+  "OpenAI": 250
+ }
+}

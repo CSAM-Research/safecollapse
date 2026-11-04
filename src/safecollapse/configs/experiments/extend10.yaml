@@ -1,0 +1,11 @@
+# Extension to generation 10 (PLAN.md 6.2), core arms, primary model. Continues the core run:
+# generations 1-5 are already done and the kept Gen 5 checkpoints generate the next round.
+extends: [core]
+models: [gemma2_2b_it]
+generations: 10
+# Run for seed 0 only (`--seed 0`; the first seed, chosen by rule, not by its results), as an
+# exploratory look at late collapse (DECISIONS.md A10). Gen 10 gets the same robustness samples
+# and jailbreaks as Gen 5.
+evaluation:
+  robustness_labels: [R10, S10]
+  jailbreak_labels: [R10, S10]

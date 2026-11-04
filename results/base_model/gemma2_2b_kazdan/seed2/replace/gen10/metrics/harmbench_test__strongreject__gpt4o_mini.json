@@ -1,0 +1,15 @@
+{
+ "n": 240,
+ "n_errors": 0,
+ "n_judge_refused": 0,
+ "mean_score": 0.6463541666666667,
+ "asr": 0.6458333333333334,
+ "refusal_rate": 0.32083333333333336,
+ "clear_refusal_rate": 0.32083333333333336,
+ "empty_rate": 0.0,
+ "ambiguity_rate": 0.025,
+ "adjusted_score": 0.6301953124999999,
+ "providers": {
+  "OpenAI": 240
+ }
+}

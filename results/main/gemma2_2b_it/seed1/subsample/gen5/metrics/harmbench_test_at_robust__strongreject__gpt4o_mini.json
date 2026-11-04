@@ -1,0 +1,14 @@
+{
+ "n": 720,
+ "n_errors": 0,
+ "mean_score": 0.2704861111111111,
+ "asr": 0.2652777777777778,
+ "refusal_rate": 0.7125,
+ "clear_refusal_rate": 0.7125,
+ "empty_rate": 0.0,
+ "ambiguity_rate": 0.020833333333333332,
+ "adjusted_score": 0.2648509837962963,
+ "providers": {
+  "OpenAI": 720
+ }
+}

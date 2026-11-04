@@ -1,0 +1,9 @@
+# Late-collapse extension of the base-model category (DECISIONS.md A10): Kazdan et al.'s published
+# Gemma-2-2B checkpoints for Gens 6-10, all three seeds, evaluated (not trained) with the main
+# protocol. Continues runs/base_model: Gens 0-5 are done and are not redone. Gen 10 gets the same
+# robustness samples and jailbreaks as Gen 5 (the Gen 0-5 labels are kept so analysis finds them).
+extends: [base_model]
+generations: 10
+evaluation:
+  robustness_labels: [G0, G1, R5, A5, R10, A10]
+  jailbreak_labels: [G0, G1, R5, A5, R10, A10]

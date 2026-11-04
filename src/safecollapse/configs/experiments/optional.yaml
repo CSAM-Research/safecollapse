@@ -1,0 +1,8 @@
+# Optional arms (PLAN.md 6.1): accumulate A2-A5 and the steps-matched original-only O5, primary
+# model only. Same study name as core, so Gen 0 and Gen 1 are reused rather than retrained.
+extends: [core]
+models: [gemma2_2b_it]
+arms: [accumulate, original]
+evaluation:
+  robustness_labels: []
+  jailbreak_labels: []

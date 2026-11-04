@@ -1,0 +1,15 @@
+{
+ "n": 240,
+ "n_errors": 0,
+ "n_judge_refused": 8,
+ "mean_score": 0.5883620689655172,
+ "asr": 0.625,
+ "refusal_rate": 0.34051724137931033,
+ "clear_refusal_rate": 0.34051724137931033,
+ "empty_rate": 0.0,
+ "ambiguity_rate": 0.03017241379310345,
+ "adjusted_score": 0.5706097651605232,
+ "providers": {
+  "CoreWeave": 240
+ }
+}

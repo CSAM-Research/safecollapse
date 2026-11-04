@@ -1,0 +1,12 @@
+# Base-model category (DECISIONS.md A8): Kazdan et al.'s published Gemma-2-2B collapse
+# checkpoints (no safety stage; seeds 0-2), scored with exactly the main study's evaluation.
+# Nothing is trained: Gen 0 is google/gemma-2-2b, and Gen 1 and the replace and accumulate
+# generations are fetched from the hub (models.yaml: published). Kazdan published no subsample
+# arm, so the data-keeping control here is accumulate (more data and steps than replace).
+extends: [core]
+name: base_model
+models: [gemma2_2b_kazdan]
+arms: [replace, accumulate]
+evaluation:
+  robustness_labels: [G0, G1, R5, A5]
+  jailbreak_labels: [G0, G1, R5, A5]

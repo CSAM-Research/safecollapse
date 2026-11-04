@@ -1,0 +1,65 @@
+# Model registry. Every model is loaded at a pinned commit (DESIGN.md Section 11).
+# Revisions checked on the Hugging Face API, 2 November 2026.
+registry:
+  models:
+    gemma2_2b_it:
+      hf_id: google/gemma-2-2b-it
+      revision: 299a8560bedf22ed1c72a8a11e7dce4a7f9f51f8
+      family: gemma
+      # Gemma-2 needs eager attention in transformers for its logit soft-capping.
+      attn_implementation: eager
+      max_model_len: 4096
+    # Base-model category: Kazdan et al.'s published HelpSteer2 collapse checkpoints of Gemma-2-2B
+    # (no safety stage), evaluated, not trained (experiments/base_model.yaml). The base model has
+    # no chat template, so Gemma-2-2B-IT's is used, as for the main model.
+    gemma2_2b_kazdan:
+      hf_id: google/gemma-2-2b
+      revision: c5ebcd40d208330abc697524c919956e692655cf
+      family: gemma
+      attn_implementation: eager
+      max_model_len: 4096
+      published: jkazdan/collapse_gemma-2-2b_hs2_{arm}_iter{gen}_sftsd{seed}
+      published_gen1: jkazdan/collapse_gemma-2-2b_hs2_iter1_sftsd{seed}
+      chat_template_from: google/gemma-2-2b-it@299a8560bedf22ed1c72a8a11e7dce4a7f9f51f8
+    llama2_7b_chat:
+      hf_id: meta-llama/Llama-2-7b-chat-hf
+      revision: f5db02db724555f92da89c216ac04704f23d4590
+      family: llama
+      attn_implementation: sdpa
+      max_model_len: 4096
+    qwen25_1p5b_it:
+      hf_id: Qwen/Qwen2.5-1.5B-Instruct
+      revision: 989aa7980e4cf806f80c7fef2b1adb7bc71aa306
+      family: qwen
+      attn_implementation: sdpa
+      max_model_len: 4096
+    # Backup candidates, piloted in case Qwen2.5-1.5B fails the gate (not gated on Hugging Face).
+    qwen25_3b_it:
+      hf_id: Qwen/Qwen2.5-3B-Instruct
+      revision: aa8e72537993ba99e69dfaafa59ed015b17504d1
+      family: qwen
+      # Eager, not SDPA: with SDPA, training (fp32 master weights, bf16 autocast, padded batches)
+      # gave a loss of ~370 and NaN gradients from the first steps, and every checkpoint of the first
+      # replication collapsed to NaN weights (DECISIONS.md D-incident). Eager trains normally.
+      attn_implementation: eager
+      max_model_len: 4096
+    phi35_mini_it:
+      hf_id: microsoft/Phi-3.5-mini-instruct
+      revision: 2fe192450127e6a83f7441aef6e3ca586c338b77
+      family: phi
+      attn_implementation: sdpa
+      max_model_len: 4096
+    # SORRY-Bench's own fine-tuned judge (Mistral-7B; gated: accept its terms on Hugging Face).
+    sorry_judge:
+      hf_id: sorry-bench/ft-mistral-7b-instruct-v0.2-sorry-bench-202406
+      revision: 79ab44668cef557414cb5e15c726a56ebca9cf1e
+      family: mistral
+      attn_implementation: sdpa
+      max_model_len: 8192
+    # HarmBench's own classifier (cross-check judge, run locally; DESIGN.md Section 5.3).
+    harmbench_cls:
+      hf_id: cais/HarmBench-Llama-2-13b-cls
+      revision: bda705349d1144fa618770bea64d99ce54e3835b
+      family: llama
+      attn_implementation: sdpa
+      max_model_len: 2048  # Llama-2-13B's context length

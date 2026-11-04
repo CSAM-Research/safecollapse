@@ -1,0 +1,6 @@
+# Main run, core arms (PLAN.md Phase 4): Gen 0, Gen 1, replace R2-R5, subsample S2-S5, 3 seeds,
+# primary model Gemma-2-2B-IT (the only model passing the strict gate in the pilot).
+# Run on several GPUs at once with: safecollapse run -c core --gpus 0,1,2,3
+extends: [base]
+name: main
+models: [gemma2_2b_it]

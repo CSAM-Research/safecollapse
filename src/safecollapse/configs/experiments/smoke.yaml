@@ -1,0 +1,17 @@
+# GPU smoke test (PLAN.md 3.8): one seed, small rounds, Gen 1 -> R2 and S2, end to end.
+# Kill it once mid-run and restart to check that it resumes.
+extends: [base]
+name: smoke
+seeds: [0]
+generations: 2
+data:
+  round_size: 1000
+  heldout_size: 100
+evaluation:
+  limit: 20
+  robustness_labels: [G1]
+  jailbreak_labels: [G1]
+  robustness_samples: 2
+  capability_limit: 50
+pilot:
+  synthetic_timing_prompts: 32

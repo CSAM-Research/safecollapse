@@ -1,0 +1,14 @@
+{
+ "n": 240,
+ "n_errors": 0,
+ "mean_score": 0.13333333333333333,
+ "asr": 0.14166666666666666,
+ "refusal_rate": 0.8333333333333334,
+ "clear_refusal_rate": 0.8333333333333334,
+ "empty_rate": 0.0,
+ "ambiguity_rate": 0.020833333333333332,
+ "adjusted_score": 0.13055555555555554,
+ "providers": {
+  "CoreWeave": 240
+ }
+}

@@ -1,0 +1,10 @@
+# Jailbreak templates (Tier 2, exploratory; DECISIONS.md A9) from the StrongREJECT authors' suite
+# at a pinned commit. Their text is not redistributed here: `jailbreaks.templates()` fetches the file
+# below once, checks its SHA-256 and uses it verbatim. `{forbidden_prompt}` is replaced by the user
+# message. refusal_suppression and prefix_injection: Wei et al. (2023); aim: jailbreakchat.com (an
+# in-the-wild role-play jailbreak). Chosen before any results.
+source: https://github.com/dsbowen/strong_reject/blob/7a551d5b440ec7b75d4f6f5bb7c1719965b76b47/strong_reject/jailbreak_files/wrapping_jailbreaks.json
+url: https://raw.githubusercontent.com/dsbowen/strong_reject/7a551d5b440ec7b75d4f6f5bb7c1719965b76b47/strong_reject/jailbreak_files/wrapping_jailbreaks.json
+commit: 7a551d5b440ec7b75d4f6f5bb7c1719965b76b47
+file_sha256: 805a29aec6b2d7129ce044663da73fcca219786cba863514ebc533180d580746
+templates: [refusal_suppression, prefix_injection, aim]

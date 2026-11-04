@@ -1,0 +1,5 @@
+# Pilot (DESIGN.md Section 8; PLAN.md Phase 1): score each candidate untouched on the HarmBench
+# validation split with both judges, apply the inclusion gate, and time generation and training.
+extends: [base]
+name: pilot
+seeds: [0]

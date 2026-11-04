@@ -1,0 +1,15 @@
+{
+ "ifeval": {
+  "name": "ifeval",
+  "alias": "ifeval",
+  "sample_len": 541,
+  "prompt_level_strict_acc,none": 0.24214417744916822,
+  "prompt_level_strict_acc_stderr,none": 0.018434587800223168,
+  "inst_level_strict_acc,none": 0.37290167865707435,
+  "inst_level_strict_acc_stderr,none": "N/A",
+  "prompt_level_loose_acc,none": 0.28835489833641403,
+  "prompt_level_loose_acc_stderr,none": 0.019493890350654804,
+  "inst_level_loose_acc,none": 0.41606714628297364,
+  "inst_level_loose_acc_stderr,none": "N/A"
+ }
+}

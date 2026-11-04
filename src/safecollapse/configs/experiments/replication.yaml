@@ -1,0 +1,9 @@
+# Replication model (after the main study; DESIGN.md Section 3.1, DECISIONS.md A4): relaxed gate,
+# Qwen2.5-3B-Instruct, one seed (descriptive replication; the confirmatory tests use Gemma).
+# Own study folder: a different model is a different protocol. `replication2`: the first run
+# (`runs/replication`, SDPA attention) diverged to NaN weights in every trained checkpoint and is
+# invalid; it is kept only as the record of that incident (DECISIONS.md D-incident).
+extends: [core]
+name: replication2
+models: [qwen25_3b_it]
+seeds: [0]

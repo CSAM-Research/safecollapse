@@ -1,0 +1,9 @@
+{
+ "n": 12500,
+ "empty_rate": 0.0,
+ "truncated_rate": 0.02736,
+ "mean_tokens": 239.72016,
+ "refusal_marker_rate": 0.05024,
+ "distinct_1": 0.02022120538991722,
+ "distinct_2": 0.2958303478163281
+}

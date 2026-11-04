@@ -1,0 +1,22 @@
+# Beam-search replace arm (DECISIONS.md A11, exploratory): does the concentration Shumailov et al.
+# report appear under their generation method? Same recipe as `main`, seed 0, replace only, but each
+# round's synthetic answers come from 5-way beam search instead of sampling at temperature 1.0.
+# Starts from main's seed-0 Gen 0 and Gen 1 (copied into this study, not retrained), so the four
+# new rounds differ from main's replace arm in the generation method alone.
+extends: [core]
+name: beam
+seeds: [0]
+arms: [replace]
+generations: 5
+synthetic:
+  temperature: 0.0
+  top_p: 1.0
+  max_new_tokens: 512
+  num_beams: 5
+generation:
+  backend: hf  # vLLM's beam search cannot stop at Gemma's end-of-turn token
+# G0 and G1 keep their copied results; R10 applies only if the run is extended
+# (`--set generations=10`; earlier generations are not redone).
+evaluation:
+  robustness_labels: [G0, G1, R5, R10]
+  jailbreak_labels: [G0, G1, R5, R10]

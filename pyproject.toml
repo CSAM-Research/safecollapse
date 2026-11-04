@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "safecollapse"
+version = "0.1.0"
+description = "Does recursive training on synthetic data (model collapse) erode the safety alignment of instruct models?"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Salmaan Suliman" }]
+# The core install is enough for: config checks, run plans, judging over the API and analysis
+# of stored scores. GPU work needs the [gpu] extra (and [vllm] for fast generation).
+dependencies = [
+    "pyyaml>=6.0",
+    "numpy>=1.24",
+    "pandas>=2.0",
+]
+
+[project.optional-dependencies]
+# torch is deliberately not listed: Colab and RunPod images ship a CUDA build, and pip would
+# otherwise replace it with a CPU or mismatched build.
+gpu = [
+    # 4.46+ normalises the loss correctly under gradient accumulation (older versions
+    # weighted micro-batches equally rather than tokens).
+    "transformers>=4.46",
+    "accelerate>=0.33",
+    "huggingface_hub>=0.24",
+    "safetensors>=0.4",
+    "sentencepiece>=0.2",
+]
+vllm = ["vllm>=0.6.3"]
+analysis = ["scipy>=1.10", "statsmodels>=0.14", "matplotlib>=3.7"]
+capability = ["lm-eval[ifeval]>=0.4.5"]
+diversity = ["sentence-transformers>=3.0"]
+dev = ["pytest>=8", "ruff>=0.5"]
+
+[project.scripts]
+safecollapse = "safecollapse.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+safecollapse = ["configs/*.yaml", "configs/experiments/*.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+# zip() over lists built from the same source; strict= adds noise without catching anything.
+ignore = ["B905"]
+
+[tool.ruff.lint.per-file-ignores]
+# Judge prompts are data: their line breaks are part of the prompt and must not change.
+"src/safecollapse/judges/rubric.py" = ["E501"]

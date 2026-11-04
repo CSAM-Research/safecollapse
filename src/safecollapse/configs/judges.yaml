@@ -1,0 +1,24 @@
+# API judges on OpenRouter (DESIGN.md Section 5.3). Providers are pinned with fallbacks disabled,
+# so every score in one analysis comes from the same weights and quantisation.
+# Availability and provider tags checked on the OpenRouter endpoints API, 2 November 2026.
+registry:
+  judges:
+    gpt4o_mini:
+      model: openai/gpt-4o-mini-2024-07-18
+      family: openai
+      provider_order: [openai]
+    llama33_70b:
+      model: meta-llama/llama-3.3-70b-instruct
+      family: llama
+      provider_order: [coreweave/fp16]
+    qwen25_72b:
+      model: qwen/qwen-2.5-72b-instruct
+      family: qwen
+      # DeepInfra is the only provider for this model.
+      provider_order: [deepinfra/fp8]
+    # The capstone's primary judge (not used in this study's analysis); kept so the judge
+    # validation can score the capstone's exact configuration.
+    deepseek_flash:
+      model: deepseek/deepseek-v4.1-flash-1017
+      family: deepseek
+      reasoning_effort: none
