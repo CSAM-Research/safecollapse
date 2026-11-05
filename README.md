@@ -69,7 +69,7 @@ Under Recursive Training*:
   `confirmatory_*.json`, `tracking_*`, `table_*.tex`), per-checkpoint `metrics/`, and
   `scores_long.csv.gz`, with one row per prompt, checkpoint and judge, including Gens 6-10.
 - `results/judge_validation/`: judge agreement with human labels.
-- `results/figures/`: the paper's figures. `scripts/` regenerates its results tables and figures, e.g.
+- `results/paper_tables/` and `results/figures/`: the paper's tables and figures. `scripts/` regenerates its results tables and figures, e.g.
   `python scripts/make_late_table.py results late.tex`.
 
 **Not released:** model weights, model answers, judge replies, benchmark prompts and jailbreak

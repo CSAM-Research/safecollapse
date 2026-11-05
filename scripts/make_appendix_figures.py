@@ -48,7 +48,7 @@ def line(root, arm, gens, file, key, seeds=SEEDS):
 
 def tidy(ax, title=None, ylabel=None, gmax=None):
     if title:
-        ax.set_title(title, color=INK, loc="left", fontsize=8, fontweight="bold")
+        ax.set_title(title, color=INK, loc="left", fontsize=6.8, fontweight="bold")
     if ylabel:
         ax.set_ylabel(ylabel)
     ax.grid(axis="y", color=GRID, lw=0.6)
@@ -63,8 +63,8 @@ def plot(ax, root, arm, gens, file, key, band=True, ls="-", seeds=SEEDS):
     x, m, lo, hi = line(root, arm, gens, file, key, seeds)
     if band:
         ax.fill_between(x, lo, hi, color=st["color"], alpha=0.14, linewidth=0)
-    ax.plot(x, m, color=st["color"], lw=1.5, ls=ls, marker=st["marker"] if ls == "-" else None,
-            ms=3.5, markeredgecolor="white", markeredgewidth=0.5, zorder=3)
+    ax.plot(x, m, color=st["color"], lw=1.2, ls=ls, marker=st["marker"] if ls == "-" else None,
+            ms=2.8, markeredgecolor="white", markeredgewidth=0.4, zorder=3)
 
 
 def legend(fig, arms, extra=(), y=1.04):
@@ -73,12 +73,12 @@ def legend(fig, arms, extra=(), y=1.04):
                    markeredgecolor="white", label=ARM[a]["label"])
         for a in arms
     ] + list(extra)
-    fig.legend(handles=handles, loc="upper center", ncol=len(handles), frameon=False, fontsize=7,
-               bbox_to_anchor=(0.5, y), handlelength=2.0, columnspacing=1.2)
+    fig.legend(handles=handles, loc="upper center", ncol=len(handles), frameon=False, fontsize=6.3,
+               bbox_to_anchor=(0.5, y), handlelength=1.6, columnspacing=0.9, handletextpad=0.4)
 
 
 def tracking(it, base, out):
-    fig, axes = plt.subplots(1, 2, figsize=(5.2, 2.1))
+    fig, axes = plt.subplots(1, 2, figsize=(3.45, 1.6))
     for ax, root, arms, title in (
         (axes[0], it, ["replace", "subsample"], "Instruction-tuned"),
         (axes[1], base, ["replace", "accumulate"], "Base"),
@@ -91,14 +91,14 @@ def tracking(it, base, out):
                 ax.plot(p, a, color=st["color"], lw=0.9, marker=st["marker"], ms=3.5, alpha=0.85,
                         markeredgecolor="white", markeredgewidth=0.4)
         ax.set_xlabel("Held-out perplexity")
-        tidy(ax, title, "ASR (primary judge)")
-    legend(fig, ["replace", "subsample", "accumulate"], y=1.08)
+        tidy(ax, title, "ASR")
+    legend(fig, ["replace", "subsample", "accumulate"], y=1.1)
     fig.tight_layout(w_pad=1.4)
     fig.savefig(out, bbox_inches="tight")
 
 
 def judges(it, base, out):
-    fig, axes = plt.subplots(1, 2, figsize=(5.2, 2.1))
+    fig, axes = plt.subplots(1, 2, figsize=(3.45, 1.6))
     for ax, root, arms, title, gmax in (
         (axes[0], it, ["replace", "subsample"], "Instruction-tuned", 5),
         (axes[1], base, ["replace", "accumulate"], "Base", 10),
@@ -110,7 +110,7 @@ def judges(it, base, out):
         ax.set_ylim(bottom=0)
         tidy(ax, title, "ASR", gmax)
     extra = [plt.Line2D([], [], color=SHARED, lw=1.5, ls="--", label="Secondary judge")]
-    legend(fig, ["replace", "subsample", "accumulate"], extra, y=1.08)
+    legend(fig, ["replace", "subsample", "accumulate"], extra, y=1.1)
     fig.tight_layout(w_pad=1.4)
     fig.savefig(out, bbox_inches="tight")
 
@@ -122,7 +122,7 @@ def secondary(it, base, out):
         ("xstest_safe__xstest__gpt4o_mini.json", "over_refusal", "XSTest over-refusal"),
         ("capability.json", ("ifeval", "prompt_level_strict_acc,none"), "IFEval accuracy"),
     )
-    fig, axes = plt.subplots(2, 4, figsize=(6.4, 2.9))
+    fig, axes = plt.subplots(2, 4, figsize=(5.0, 2.3))
     for r, (root, arms, gmax, name) in enumerate((
         (it, ["replace", "subsample"], 5, "Instruction-tuned"),
         (base, ["replace", "accumulate"], 10, "Base"),
@@ -134,7 +134,7 @@ def secondary(it, base, out):
             tidy(ax, title if r == 0 else None, name if c == 0 else None, gmax)
             if r == 1:
                 ax.set_xlabel("Generation")
-    legend(fig, ["replace", "subsample", "accumulate"], y=1.05)
+    legend(fig, ["replace", "subsample", "accumulate"], y=1.07)
     fig.tight_layout(h_pad=0.8, w_pad=0.8)
     fig.savefig(out, bbox_inches="tight")
 
@@ -146,17 +146,17 @@ def synthetic(it, out):
         ("tail_loss.json", ("quantiles", "p50"), "Median perplexity under Gen 0", ref["quantiles"]["p50"]),
         ("synthetic_audit.json", "distinct_2", "Distinct-2 diversity", None),
     )
-    fig, axes = plt.subplots(1, 3, figsize=(5.8, 1.9))
+    fig, axes = plt.subplots(1, 3, figsize=(4.8, 1.55))
     for ax, (file, key, title, base_line) in zip(axes, panels):
         for arm in ("replace", "subsample"):
             plot(ax, it, arm, range(1, 10), file, key, band=False, seeds=[0])
         if base_line is not None:
             ax.axhline(base_line, color=MUTED, lw=0.9, ls=":", zorder=1)
         ax.set_xticks(range(1, 10, 2))
-        ax.set_xlabel("Generation that wrote the data")
+        ax.set_xlabel("Generation")
         tidy(ax, title)
     extra = [plt.Line2D([], [], color=MUTED, lw=0.9, ls=":", label="Original data")]
-    legend(fig, ["replace", "subsample"], extra, y=1.1)
+    legend(fig, ["replace", "subsample"], extra, y=1.13)
     fig.tight_layout(w_pad=1.0)
     fig.savefig(out, bbox_inches="tight")
 

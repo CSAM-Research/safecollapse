@@ -14,7 +14,7 @@ def load(results_dir: Path, model: str) -> dict:
     out = defaultdict(lambda: defaultdict(list))
     with open(results_dir / f"tracking_{model}.csv") as fh:
         for row in csv.DictReader(fh):
-            for metric in ("asr", "perplexity", "ifeval"):
+            for metric in ("asr", "refused", "perplexity", "ifeval"):
                 if row.get(metric) not in (None, "", "nan"):
                     out[row["label"]][metric].append(float(row[metric]))
     return out
@@ -29,8 +29,9 @@ def cell(values: list[float]) -> str:
 
 
 def row(name: str, it: dict, base: dict, it_label: str, base_label: str) -> str:
-    cells = [cell(it.get(it_label, {}).get(m, [])) for m in ("asr", "perplexity", "ifeval")]
-    cells += [cell(base.get(base_label, {}).get(m, [])) for m in ("asr", "perplexity", "ifeval")]
+    metrics = ("asr", "refused", "perplexity", "ifeval")
+    cells = [cell(it.get(it_label, {}).get(m, [])) for m in metrics]
+    cells += [cell(base.get(base_label, {}).get(m, [])) for m in metrics]
     return f"{name} & " + " & ".join(cells) + r" \\"
 
 
@@ -41,11 +42,11 @@ def main(it_dir: str, base_dir: str, out: str) -> None:
         {int(lbl[1:]) for lbl in list(it) + list(base) if lbl[0] in "RSA" and lbl[1:].isdigit()}
     )
     lines = [
-        r"\begin{tabular}{lcccccc}",
+        r"\begin{tabular}{lcccccccc}",
         r"\toprule",
-        r" & \multicolumn{3}{c}{Instruction-tuned (Gemma-2-2B-IT)} & \multicolumn{3}{c}{Base (Gemma-2-2B)} \\",
-        r"\cmidrule(lr){2-4}\cmidrule(lr){5-7}",
-        r"Checkpoint & ASR & Held-out PPL & IFEval & ASR & Held-out PPL & IFEval \\",
+        r" & \multicolumn{4}{c}{Instruction-tuned (Gemma-2-2B-IT)} & \multicolumn{4}{c}{Base (Gemma-2-2B)} \\",
+        r"\cmidrule(lr){2-5}\cmidrule(lr){6-9}",
+        r"Checkpoint & ASR & Refused & PPL & IFEval & ASR & Refused & PPL & IFEval \\",
         r"\midrule",
         row("Gen~0", it, base, "G0", "G0"),
         row("Gen~1", it, base, "G1", "G1"),

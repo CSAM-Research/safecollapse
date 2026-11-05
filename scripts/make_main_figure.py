@@ -30,11 +30,11 @@ plt.rcParams.update(
         "font.family": "serif",
         "font.serif": ["Times New Roman", "Times", "Nimbus Roman", "STIXGeneral", "DejaVu Serif"],
         "mathtext.fontset": "stix",
-        "font.size": 8,
-        "axes.titlesize": 9,
-        "axes.labelsize": 8,
-        "xtick.labelsize": 7.5,
-        "ytick.labelsize": 7.5,
+        "font.size": 7,
+        "axes.titlesize": 7.5,
+        "axes.labelsize": 7,
+        "xtick.labelsize": 6.5,
+        "ytick.labelsize": 6.5,
         "axes.edgecolor": MUTED,
         "axes.labelcolor": INK,
         "xtick.color": MUTED,
@@ -77,16 +77,16 @@ def panel(ax, data: dict, arms: list[str], metric: str, ylabel: str, title: str 
         st = ARM[arm]
         g, m, lo, hi = series(data, arm, metric)
         ax.fill_between(g, lo, hi, color=st["color"], alpha=0.14, linewidth=0)
-        ax.plot(g, m, color=st["color"], lw=1.8, marker=st["marker"], ms=5,
-                markeredgecolor="white", markeredgewidth=0.8, zorder=3)
+        ax.plot(g, m, color=st["color"], lw=1.4, marker=st["marker"], ms=3.5,
+                markeredgecolor="white", markeredgewidth=0.5, zorder=3)
     for gen in (0, 1):
         vals = data[("shared", gen)][metric]
         if vals:
-            ax.plot([gen], [statistics.mean(vals)], marker="D", ms=5, color=SHARED,
-                    markeredgecolor="white", markeredgewidth=0.8, zorder=4)
+            ax.plot([gen], [statistics.mean(vals)], marker="D", ms=3.5, color=SHARED,
+                    markeredgecolor="white", markeredgewidth=0.5, zorder=4)
     g0, g1 = data[("shared", 0)][metric], data[("shared", 1)][metric]
     if g0 and g1:
-        ax.plot([0, 1], [statistics.mean(g0), statistics.mean(g1)], color=SHARED, lw=1.4, zorder=2)
+        ax.plot([0, 1], [statistics.mean(g0), statistics.mean(g1)], color=SHARED, lw=1.1, zorder=2)
     ax.set_ylabel(ylabel)
     if title:
         ax.set_title(title, color=INK, loc="left", fontweight="bold")
@@ -122,9 +122,9 @@ def load_nodes(root: Path, seeds: list[int], arms: list[str], gmax: int) -> dict
 
 def draw(cols: list, out: str) -> None:
     """2 x 2 grid: ASR on top, perplexity below, one column per category."""
-    fig, axes = plt.subplots(2, 2, figsize=(5.6, 3.3), sharex="col")
+    fig, axes = plt.subplots(2, 2, figsize=(3.45, 2.5), sharex="col")
     for c, (data, arms, title) in enumerate(cols):
-        panel(axes[0, c], data, arms, "asr", "ASR (primary judge)", title)
+        panel(axes[0, c], data, arms, "asr", "ASR", title)
         panel(axes[1, c], data, arms, "perplexity", "Held-out perplexity", None)
         gmax = max(g for (_, g) in data)
         axes[1, c].set_xticks(range(0, gmax + 1, 2 if gmax > 5 else 1))
@@ -134,14 +134,14 @@ def draw(cols: list, out: str) -> None:
         axes[1, c].set_xlabel("Generation")
         axes[0, c].set_ylim(bottom=0)
     handles = [
-        plt.Line2D([], [], color=ARM[a]["color"], marker=ARM[a]["marker"], lw=1.8, ms=5,
+        plt.Line2D([], [], color=ARM[a]["color"], marker=ARM[a]["marker"], lw=1.4, ms=3.5,
                    markeredgecolor="white", label=ARM[a]["label"])
         for a in ("replace", "subsample", "accumulate")
-    ] + [plt.Line2D([], [], color=SHARED, marker="D", lw=1.4, ms=5, markeredgecolor="white",
+    ] + [plt.Line2D([], [], color=SHARED, marker="D", lw=1.1, ms=3.5, markeredgecolor="white",
                     label="Shared Gens 0, 1")]
-    fig.legend(handles=handles, loc="upper center", ncol=4, frameon=False, fontsize=7.5,
-               bbox_to_anchor=(0.5, 1.03), handlelength=2.0, columnspacing=1.2)
-    fig.tight_layout(rect=(0, 0, 1, 0.94), h_pad=0.6, w_pad=1.6)
+    fig.legend(handles=handles, loc="upper center", ncol=2, frameon=False, fontsize=6.5,
+               bbox_to_anchor=(0.5, 1.09), handlelength=2.0, columnspacing=1.2, labelspacing=0.2)
+    fig.tight_layout(h_pad=0.4, w_pad=0.8)
     fig.savefig(out, bbox_inches="tight")
     fig.savefig(str(Path(out).with_suffix(".png")), bbox_inches="tight", dpi=200)
 
@@ -151,8 +151,8 @@ def main(it_dir: str, base_dir: str, out: str, runs: str | None = None) -> None:
     base = load(Path(base_dir) / "tracking_gemma2_2b_kazdan.csv")
     draw(
         [
-            (it, ["replace", "subsample"], "Instruction-tuned (Gemma-2-2B-IT)"),
-            (base, ["replace", "accumulate"], "Base (Gemma-2-2B)"),
+            (it, ["replace", "subsample"], "Instruction-tuned"),
+            (base, ["replace", "accumulate"], "Base"),
         ],
         out,
     )

@@ -1,0 +1,22 @@
+\begin{tabular}{lcccccccc}
+\toprule
+ & \multicolumn{4}{c}{Instruction-tuned (Gemma-2-2B-IT)} & \multicolumn{4}{c}{Base (Gemma-2-2B)} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-9}
+Checkpoint & ASR & Refused & PPL & IFEval & ASR & Refused & PPL & IFEval \\
+\midrule
+Gen~0 & 0.05 & 0.95 & 3.02 & 0.54 & 0.34 & 0.56 & 2.48 & 0.26 \\
+Gen~1 & 0.21 $\pm$ 0.02 & 0.77 $\pm$ 0.03 & 2.07 $\pm$ 0.00 & 0.29 $\pm$ 0.01 & 0.67 $\pm$ 0.01 & 0.30 $\pm$ 0.01 & 2.33 $\pm$ 0.00 & 0.17 $\pm$ 0.02 \\
+\addlinespace[2pt]
+Gen~2$^{\mathrm{rep}}$ & 0.26 $\pm$ 0.04 & 0.72 $\pm$ 0.04 & 2.15 $\pm$ 0.00 & 0.26 $\pm$ 0.03 & 0.70 $\pm$ 0.00 & 0.28 $\pm$ 0.00 & 2.93 $\pm$ 0.06 & 0.14 $\pm$ 0.01 \\
+Gen~2$^{\mathrm{sub/acc}}$ & 0.23 $\pm$ 0.05 & 0.75 $\pm$ 0.05 & 2.10 $\pm$ 0.00 & 0.27 $\pm$ 0.02 & 0.69 $\pm$ 0.01 & 0.27 $\pm$ 0.00 & 2.38 $\pm$ 0.00 & 0.19 $\pm$ 0.01 \\
+\addlinespace[2pt]
+Gen~3$^{\mathrm{rep}}$ & 0.23 $\pm$ 0.10 & 0.75 $\pm$ 0.10 & 2.20 $\pm$ 0.00 & 0.24 $\pm$ 0.03 & 0.68 $\pm$ 0.01 & 0.29 $\pm$ 0.02 & 3.69 $\pm$ 0.06 & 0.16 $\pm$ 0.00 \\
+Gen~3$^{\mathrm{sub/acc}}$ & 0.22 $\pm$ 0.00 & 0.76 $\pm$ 0.01 & 2.12 $\pm$ 0.00 & 0.27 $\pm$ 0.01 & 0.68 $\pm$ 0.02 & 0.27 $\pm$ 0.02 & 2.39 $\pm$ 0.00 & 0.19 $\pm$ 0.01 \\
+\addlinespace[2pt]
+Gen~4$^{\mathrm{rep}}$ & 0.22 $\pm$ 0.05 & 0.76 $\pm$ 0.05 & 2.24 $\pm$ 0.00 & 0.24 $\pm$ 0.03 & 0.68 $\pm$ 0.01 & 0.28 $\pm$ 0.01 & 4.70 $\pm$ 0.17 & 0.14 $\pm$ 0.00 \\
+Gen~4$^{\mathrm{sub/acc}}$ & 0.22 $\pm$ 0.03 & 0.75 $\pm$ 0.03 & 2.13 $\pm$ 0.00 & 0.29 $\pm$ 0.01 & 0.65 $\pm$ 0.01 & 0.32 $\pm$ 0.01 & 2.39 $\pm$ 0.01 & 0.17 $\pm$ 0.01 \\
+\addlinespace[2pt]
+Gen~5$^{\mathrm{rep}}$ & 0.21 $\pm$ 0.05 & 0.77 $\pm$ 0.05 & 2.27 $\pm$ 0.00 & 0.24 $\pm$ 0.03 & 0.70 $\pm$ 0.02 & 0.26 $\pm$ 0.03 & 5.58 $\pm$ 0.30 & 0.13 $\pm$ 0.01 \\
+Gen~5$^{\mathrm{sub/acc}}$ & 0.23 $\pm$ 0.04 & 0.75 $\pm$ 0.04 & 2.13 $\pm$ 0.00 & 0.26 $\pm$ 0.01 & 0.61 $\pm$ 0.02 & 0.35 $\pm$ 0.02 & 2.40 $\pm$ 0.01 & 0.17 $\pm$ 0.01 \\
+\bottomrule
+\end{tabular}
