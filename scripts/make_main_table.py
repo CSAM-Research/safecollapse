@@ -1,22 +1,40 @@
-"""Build the main-text results table (both categories side by side, per checkpoint: ASR, held-out
-perplexity, IFEval; mean +- sd over seeds) from the analysis outputs `tracking_<model>.csv`.
-Run by `make results`. Usage: python3 make_main_table.py <it_results_dir> <base_results_dir> <out>
+"""Build the main-text results table (both categories side by side, per checkpoint: ASR, refusals,
+held-out perplexity, IFEval; mean +- sd over seeds) to Gen 10, from the node metrics, for every
+seed that reached that checkpoint. Run by `make results`.
+Usage: python3 make_main_table.py <runs_dir> <out>
 """
-import csv
+import json
 import statistics
 import sys
 from collections import defaultdict
 from pathlib import Path
 
 
-def load(results_dir: Path, model: str) -> dict:
+def load(root: Path) -> dict:
     """label -> {metric: [values over seeds]}"""
+    def read(node: Path, name: str) -> dict:
+        try:
+            return json.loads((node / "metrics" / name).read_text().replace("NaN", "null"))
+        except (OSError, ValueError):
+            return {}
+
+    nodes = [("G0", root / "gen0")]
+    for seed in sorted(root.glob("seed*")):
+        nodes.append(("G1", seed / "shared/gen1"))
+        for arm, letter in (("replace", "R"), ("subsample", "S"), ("accumulate", "A")):
+            nodes += [(f"{letter}{d.name[3:]}", d) for d in (seed / arm).glob("gen*")]
     out = defaultdict(lambda: defaultdict(list))
-    with open(results_dir / f"tracking_{model}.csv") as fh:
-        for row in csv.DictReader(fh):
-            for metric in ("asr", "refused", "perplexity", "ifeval"):
-                if row.get(metric) not in (None, "", "nan"):
-                    out[row["label"]][metric].append(float(row[metric]))
+    for label, node in nodes:
+        judged = read(node, "harmbench_test__strongreject__gpt4o_mini.json")
+        values = {
+            "asr": judged.get("asr"),
+            "refused": judged.get("refusal_rate"),
+            "perplexity": read(node, "heldout_nll.json").get("perplexity"),
+            "ifeval": read(node, "capability.json").get("ifeval", {}).get("prompt_level_strict_acc,none"),
+        }
+        for metric, value in values.items():
+            if value is not None:
+                out[label][metric].append(value)
     return out
 
 
@@ -35,9 +53,9 @@ def row(name: str, it: dict, base: dict, it_label: str, base_label: str) -> str:
     return f"{name} & " + " & ".join(cells) + r" \\"
 
 
-def main(it_dir: str, base_dir: str, out: str) -> None:
-    it = load(Path(it_dir), "gemma2_2b_it")
-    base = load(Path(base_dir), "gemma2_2b_kazdan")
+def main(runs: str, out: str) -> None:
+    it = load(Path(runs) / "main/gemma2_2b_it")
+    base = load(Path(runs) / "base_model/gemma2_2b_kazdan")
     gens = sorted(
         {int(lbl[1:]) for lbl in list(it) + list(base) if lbl[0] in "RSA" and lbl[1:].isdigit()}
     )
@@ -52,7 +70,7 @@ def main(it_dir: str, base_dir: str, out: str) -> None:
         row("Gen~1", it, base, "G1", "G1"),
     ]
     for t in gens:
-        lines.append(r"\addlinespace[2pt]")
+        lines.append(r"\addlinespace[1pt]")
         lines.append(row(rf"Gen~{t}$^{{\mathrm{{rep}}}}$", it, base, f"R{t}", f"R{t}"))
         lines.append(row(rf"Gen~{t}$^{{\mathrm{{sub/acc}}}}$", it, base, f"S{t}", f"A{t}"))
     lines += [r"\bottomrule", r"\end{tabular}"]
@@ -60,4 +78,4 @@ def main(it_dir: str, base_dir: str, out: str) -> None:
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:4])
+    main(*sys.argv[1:3])
