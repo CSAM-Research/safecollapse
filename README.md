@@ -9,6 +9,9 @@ safety evaluation with family-separated judges, collapse metrics, and the planne
 > **Safety note.** Runs produce harmful completions. Keep `runs/` private; never publish
 > collapsed weights or raw completions.
 
+## Frontend (local)
+To run a local frontend for observability of traces, please see the repo: [safecollapse-local-frontend](https://github.com/CSAM-Research/safecollapse-local-frontend/tree/main).
+
 ## Install
 
 ```bash
